@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TasksManager.Api.Data;
+using TasksManager.Api.Requests;
 using TasksManager.Api.Service;
 
 namespace TasksManager.Api.Controllers;
@@ -15,9 +16,15 @@ public class ItemController: ControllerBase
         _itemService = itemService;
     }
 
-    [HttpGet(Name = "GetItems")]
+    [HttpGet]
     public IEnumerable<Item> Get()
     {
         return _itemService.GetAll();
+    }
+    
+    [HttpPost]
+    public Item Create(NewItemRequest newItem)
+    {
+        return _itemService.Create(newItem);
     }
 }

@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using TasksManager.Api.Data;
+using TasksManager.Api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IItemService, ItemService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -12,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TaskManagerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("psqlConnection")));
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
