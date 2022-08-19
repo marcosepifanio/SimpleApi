@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using TasksManager.Api.Data;
 using TasksManager.Api.Requests;
+using TasksManager.Api.Responses;
 using TasksManager.Api.Service;
 
 namespace TasksManager.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ItemController: ControllerBase
+public class ItemController : ControllerBase
 {
     private readonly IItemService _itemService;
 
@@ -17,14 +17,27 @@ public class ItemController: ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Item> Get()
+    public ListItemResponse GetAll()
     {
-        return _itemService.GetAll();
+        return new ListItemResponse(_itemService.GetAll());
     }
-    
+
     [HttpPost]
-    public Item Create(NewItemRequest newItem)
+    public ItemResponse Create(NewItemRequest newItem)
     {
         return _itemService.Create(newItem);
+    }
+
+    [HttpGet("{id}")]
+    public ItemResponse? GetById(int id)
+    {
+        var item = _itemService.GetById(id);
+        return item == null ? null : new ItemResponse(item);
+    }
+    
+    [HttpDelete("{id}")]
+    public void DeleteById(int id)
+    {
+        _itemService.DeleteById(id);
     }
 }

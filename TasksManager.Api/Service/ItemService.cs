@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TasksManager.Api.Data;
 using TasksManager.Api.Requests;
+using TasksManager.Api.Responses;
 
 namespace TasksManager.Api.Service;
 
@@ -27,7 +28,7 @@ public class ItemService : IItemService
             .SingleOrDefault(x => x.Id == id);
     }
 
-    public Item Create(NewItemRequest newItem)
+    public ItemResponse Create(NewItemRequest newItem)
     {
         var item = new Item
         (
@@ -39,7 +40,7 @@ public class ItemService : IItemService
         );
         _taskManagerContext.Items.Add(item);
         _taskManagerContext.SaveChanges();
-        return item;
+        return new ItemResponse(item);
     }
 
     public void DeleteById(int id)
